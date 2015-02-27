@@ -9,6 +9,13 @@
     document.body.scrollIntoView();
 
     requestAnimationFrame(() => {
+
+      // Reset the body overflow style after transitionend.
+      frame.addEventListener('transitionend', function _onEnd() {
+        frame.removeEventListener('transitionend', _onEnd);
+        document.body.style.overflowX = '';
+      })
+
       frame.style.transform = 'translateX(0%)';
       frame.style.opacity = '1';
     });
@@ -20,6 +27,9 @@
   ctx.open = function(url) {
     var nextFrame = document.createElement('iframe');
     nextFrame.src = url;
+
+    // Hide scrollbars when we animate a new panel in.
+    document.body.style.overflowX = 'hidden';
 
     nextFrame.style.position = 'absolute';
     nextFrame.style.top = '0px';
